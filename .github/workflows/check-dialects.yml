@@ -1,5 +1,8 @@
 name: check-dialects
 
+# Title runs by workflow name, not the commit's first line (see test.yml).
+run-name: "${{ github.workflow }} - ${{ github.ref_name }}"
+
 # Compile every source under all four dialect profiles: mvs, rm, mvs-strict, rm-strict.
 # The confidential job data is never pushed, so nothing here needs it.
 on:

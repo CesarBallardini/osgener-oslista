@@ -1,5 +1,8 @@
 name: lint-extra
 
+# Title runs by workflow name, not the commit's first line (see test.yml).
+run-name: "${{ github.workflow }} - ${{ github.ref_name }}"
+
 # Counts the two warning classes `make lint` deliberately suppresses:
 # -Wterminator (only the DISPLAYs, which have no valid terminator in
 # this dialect) and -Wpossible-truncate (intentional nibble/digit

@@ -1,5 +1,8 @@
 name: lint-strict
 
+# Title runs by workflow name, not the commit's first line (see test.yml).
+run-name: "${{ github.workflow }} - ${{ github.ref_name }}"
+
 # Audit the sources against -std=mvs-strict using the portable copybook.
 # The confidential job data is never pushed, so nothing here needs it.
 on:

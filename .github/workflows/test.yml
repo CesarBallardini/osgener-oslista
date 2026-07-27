@@ -1,5 +1,11 @@
 name: test
 
+# Title each run by workflow name and ref, not by the commit's first
+# line (GitHub's default for push events, which makes every workflow in
+# the Actions list look alike). Badges are unaffected - they key off the
+# workflow name and file, not the run name.
+run-name: "${{ github.workflow }} - ${{ github.ref_name }}"
+
 # Builds both binaries and runs every suite: the in-COBOL unit harness,
 # the end-to-end simulation with its golden baselines, the 63 engine
 # tests and the 93 manual-example conformance cases.
