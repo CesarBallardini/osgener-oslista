@@ -1,0 +1,21 @@
+name: lint
+
+# Fail on any compiler warning. -Werror makes this a real gate: cobc exits 0 even when it prints warnings.
+# The confidential job data is never pushed, so nothing here needs it.
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-gnucobol
+      - run: make lint

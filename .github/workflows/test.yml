@@ -1,0 +1,67 @@
+name: test
+
+# Builds both binaries and runs every suite: the in-COBOL unit harness,
+# the end-to-end simulation with its golden baselines, the 63 engine
+# tests and the 93 manual-example conformance cases.
+#
+# tests/mainframe_check.sh reports SKIP here by design: it replays a
+# real production job whose data is confidential and never pushed.
+# Run it locally with `make mf-tests` on a machine that has the data.
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: make test (${{ matrix.dialect }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # The engine is one source built two ways and the project
+        # claims byte-identical results. Run both so that claim is
+        # tested rather than asserted.
+        dialect: [gnucobol, rm]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-gnucobol
+
+      - name: Build
+        run: make all ostests DIALECT=${{ matrix.dialect }}
+
+      # `make test` rebuilds with the default dialect, so drive the
+      # suites directly to keep the matrix leg honest.
+      - name: Unit harness
+        run: ./bin/OSTESTS
+
+      - name: Simulation + golden baselines
+        run: |
+          ./tests/run_sim.sh
+          ./tests/golden_check.sh
+
+      - name: Engine suite
+        run: ./tests/run_tests.sh
+
+      - name: Manual-example conformance
+        run: ./tests/manual_examples.sh
+
+      - name: Mainframe replay (skips without the private data)
+        run: ./tests/mainframe_check.sh
+
+      - name: Upload outputs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-output-${{ matrix.dialect }}
+          path: |
+            datasets/
+            logs/
+            tests/work*/
+          retention-days: 7

@@ -1,0 +1,59 @@
+# ===================================================================
+# CONFIDENTIAL - NEVER PUBLISH
+# ===================================================================
+# private/ holds real personnel data from the 2017 migration study:
+# names, document numbers and salary amounts. Ignoring the directory
+# itself (not individual dataset names) means anything dropped in
+# later is covered too.
+#
+# tests/mainframe_check.sh skips cleanly when private/ is absent, so
+# a public clone still builds and passes every other suite.
+private/
+
+# ===================================================================
+# BUILD OUTPUT
+# ===================================================================
+bin/
+*.exe
+*.o
+*.so
+*.dll
+*.int
+*.gnt
+
+# ===================================================================
+# TEST + SIMULATION OUTPUT
+# ===================================================================
+# tests/run_sim.sh regenerates these on every run.
+datasets/
+logs/
+# Per-suite scratch areas. tests/expected/ is the committed golden
+# baseline set and is deliberately NOT ignored.
+tests/work/
+tests/work-manual/
+tests/work-mf/
+
+# Stray DDNAME files, if a harness ever forgets to redirect one.
+# Anchored to the repo root so a real file of the same name deeper
+# in the tree would still be tracked.
+/SYSIN
+/SYSLIST
+/SYSPRINT
+/SYSUT1
+/SYSUT2
+/SYSUT3
+/SYSUT4
+/SYSUT5
+/SYSUT6
+
+# ===================================================================
+# EDITOR / OS NOISE
+# ===================================================================
+*~
+*.bak
+*.orig
+*.swp
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

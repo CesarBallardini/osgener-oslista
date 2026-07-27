@@ -1,0 +1,31 @@
+# ===================================================================
+# CONFIDENTIAL - never let the job data into the build context.
+# Belt and braces: as a directory, as a bare name, and at any depth.
+# It is mounted at run time instead:
+#   docker run --rm -v "$PWD/private:/src/private:ro" osgener-oslista
+# ===================================================================
+private/
+private
+**/private/
+**/lotes-prueba.tgz
+
+# Build and test output - regenerated inside the image.
+bin/
+datasets/
+logs/
+tests/work/
+tests/work-manual/
+tests/work-mf/
+*.exe
+*.o
+*.so
+*.dll
+
+# Not needed to build or test.
+.git/
+docs/
+jcl/
+README.md
+CLAUDE.md
+Dockerfile
+.dockerignore

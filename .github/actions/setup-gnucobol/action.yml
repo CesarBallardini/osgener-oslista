@@ -1,0 +1,20 @@
+name: Set up GnuCOBOL
+description: >
+  Install the COBOL toolchain the Makefile expects. Shared by every
+  workflow so the five badges cannot drift apart.
+
+runs:
+  using: composite
+  steps:
+    # gnucobol is a metapackage. Pin gnucobol3: its default could flip
+    # to GnuCOBOL 4, which changes dialect handling and would silently
+    # alter what the -std profiles mean for this project.
+    #
+    # gcc + libc6-dev : cobc translates COBOL to C, then compiles it
+    # perl, diffutils : used by the test suites
+    - shell: bash
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y --no-install-recommends \
+          gnucobol3 gcc libc6-dev make perl diffutils
+        cobc --version | head -1

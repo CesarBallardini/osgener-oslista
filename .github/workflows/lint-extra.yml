@@ -1,0 +1,39 @@
+name: lint-extra
+
+# Counts the two warning classes `make lint` deliberately suppresses:
+# -Wterminator (only the DISPLAYs, which have no valid terminator in
+# this dialect) and -Wpossible-truncate (intentional nibble/digit
+# staging; bounds are enforced semantically by 1600-VALIDATE-CONFIG).
+#
+# This target is ADVISORY: it cannot fail, so the badge stays green by
+# construction. Its value is the number, which the job publishes to
+# the run summary - watch it for sudden growth when adding code.
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-extra:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-gnucobol
+
+      - name: Count suppressed advisory warnings
+        run: |
+          count=$(make lint-extra | tail -1)
+          echo "Suppressed advisory warnings: $count"
+          {
+            echo "### Suppressed advisory warnings"
+            echo
+            echo "**$count** occurrences of \`-Wterminator\` + \`-Wpossible-truncate\`."
+            echo
+            echo "Advisory only - see the rationale in the Makefile."
+          } >> "$GITHUB_STEP_SUMMARY"
