@@ -5,7 +5,9 @@
 # The OSLISTA heading carries the run date (TIT FA) - it is
 # normalized to <DATE> on both sides before comparing.
 # Regenerate baselines after an INTENDED behavior change with:
-#   ./run_sim.sh && ./tests/golden_check.sh --update
+#   bash tests/run_sim.sh && bash tests/golden_check.sh --update
+# (run from the repository root; the scripts are committed non-executable,
+#  so invoke them through bash rather than as ./tests/x.sh)
 # ===================================================================
 cd "$(dirname "$0")/.." || exit 1
 

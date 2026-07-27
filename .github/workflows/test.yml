@@ -41,19 +41,22 @@ jobs:
       - name: Unit harness
         run: ./bin/OSTESTS
 
+      # Run as "bash tests/x.sh", matching the Makefile: the scripts are
+      # committed mode 100644 (developed on Windows, where git cannot
+      # record the executable bit), so "./tests/x.sh" exits 126 here.
       - name: Simulation + golden baselines
         run: |
-          ./tests/run_sim.sh
-          ./tests/golden_check.sh
+          bash tests/run_sim.sh
+          bash tests/golden_check.sh
 
       - name: Engine suite
-        run: ./tests/run_tests.sh
+        run: bash tests/run_tests.sh
 
       - name: Manual-example conformance
-        run: ./tests/manual_examples.sh
+        run: bash tests/manual_examples.sh
 
       - name: Mainframe replay (skips without the private data)
-        run: ./tests/mainframe_check.sh
+        run: bash tests/mainframe_check.sh
 
       - name: Upload outputs on failure
         if: failure()

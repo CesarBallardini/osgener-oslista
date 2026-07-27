@@ -15,6 +15,11 @@ Both are driven by 80-column control cards read from `SYSIN`. A single COBOL eng
 `src/OSENGINE.CBL`, parses those cards at run time and behaves as either utility; two thin
 stubs select the personality.
 
+The originals were written by **Jorge Vattuone** at the CUPED, the Argentine state's central
+data-processing centre. A single paragraph in *40 años de informática en el Estado argentino*
+(EDUNTREF, 2007) is the only published account of them — quoted and translated in
+[**A Little History**](docs/a-little-history.md).
+
 ```sh
 make            # list targets
 make all        # build bin/OSGENER and bin/OSLISTA
@@ -137,7 +142,7 @@ profiles (mvs, rm, and both `-strict` variants).
 src/         OSENGINE.CBL, the two dispatch stubs, per-dialect copybooks
 tests/       all suites + the unit harness + committed golden baselines
 docs/        manual/  the SCD 1/84 source and its full English translation
-             user-guide.md, plan.md
+             user-guide.md, plan.md, a-little-history.md
 jcl/         RUNPROC.JCL - the MVS deck
 Dockerfile   reproducible build + test environment (Debian 13)
 LICENSE      MIT
@@ -155,6 +160,25 @@ private/     confidential data, git-ignored, never published
 - **`docs/plan.md`** — implementation history and every design decision (D0.1–D0.10),
   including the 29 conformance gaps found by replaying the manual and the one found by
   replaying the real job.
+- **`docs/a-little-history.md`** — who wrote the originals, and why. A published history of
+  computing in the Argentine state names the author (**Jorge Vattuone**) and the organisation
+  (the **CUPED**), and lists a design brief that maps one-for-one onto the control cards
+  implemented here.
+
+## References
+
+- Pablo A. Fontdevila, Arturo Laguado Duca and Horacio Cao, *40 años de informática en el
+  Estado argentino*, EDUNTREF — Universidad Nacional de Tres de Febrero, 1st ed., November
+  2007. The single published account of OSGENER and OSLISTA's origin is on page 37; it is
+  quoted and translated in [`docs/a-little-history.md`](docs/a-little-history.md).
+  - A copy is kept at
+    [`docs/Cuarenta_anos_de_informatica_en_el_Estado.pdf`](docs/Cuarenta_anos_de_informatica_en_el_Estado.pdf).
+  - Published for free download by **co-author Horacio Cao on his own website**, which is the
+    evidence that the authors distribute it freely:
+    [horaciocao.com.ar/…/08_Cuarenta_anos_de_informatica_en_el_Estado.pdf](https://www.horaciocao.com.ar/wp-content/uploads/2015/05/08_Cuarenta_anos_de_informatica_en_el_Estado.pdf)
+    — archived in the
+    [Wayback Machine snapshot of 2021-05-08](https://web.archive.org/web/20210508192023/https://www.horaciocao.com.ar/wp-content/uploads/2015/05/08_Cuarenta_anos_de_informatica_en_el_Estado.pdf),
+    which is where this copy was retrieved from. Publicly funded research.
 
 ## Files, in mainframe terms
 
@@ -177,5 +201,15 @@ export SYSUT1=./in.dat SYSUT2=./out.dat SYSIN=./cards.txt SYSPRINT=./log.txt
 
 [MIT](LICENSE) — © 2026 Cesar Ballardini.
 
-The SCD 1/84 manual reproduced under `docs/manual/` is the work of its original authors and
-is included for reference; the MIT grant covers this reimplementation, not that document.
+The MIT grant covers this reimplementation, not the third-party documents distributed
+alongside it:
+
+- The **SCD 1/84 manual** under `docs/manual/` is the work of its original authors. The CUPED
+  released the utilities and their documentation as public-domain software within the
+  Argentine public administration, which is why it can be reproduced here in full.
+- The **book** under `docs/` remains © its authors and EDUNTREF. It is publicly funded
+  research, it carries no restriction on copying, and its authors distribute it free of
+  charge — co-author Horacio Cao publishes the very same PDF for download on his own site,
+  [horaciocao.com.ar](https://www.horaciocao.com.ar/wp-content/uploads/2015/05/08_Cuarenta_anos_de_informatica_en_el_Estado.pdf)
+  ([archived](https://web.archive.org/web/20210508192023/https://www.horaciocao.com.ar/wp-content/uploads/2015/05/08_Cuarenta_anos_de_informatica_en_el_Estado.pdf)).
+  It is included here as the cited source for `docs/a-little-history.md`.

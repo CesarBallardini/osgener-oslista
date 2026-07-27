@@ -23,18 +23,18 @@ cobc -x -std=mvs -ffilename-mapping -I src/copy/gnucobol -o ./bin/OSTESTS tests/
 --- Unit tests ---
 ./bin/OSTESTS
 ==================================================
-SCD ENGINE - AUTOMATED UNIT TEST SUITE ACTIVE
+SCD ENGINE - AUTOMATED UNIT TEST SUITE ACTIVE     
 ==================================================
-TC-01 (zDVy Mod-10 Checksum)  : PASSED
-TC-02 (UNPK Mainframe COMP-3) : PASSED
-TC-03 (INCON ND Active Clean) : PASSED
-TC-04 (CODIG Relational Chk)  : PASSED
-TC-05 (COND Indicator Route)  : PASSED
+TC-01 (zDVy Mod-10 Checksum)  : PASSED    
+TC-02 (UNPK Mainframe COMP-3) : PASSED    
+TC-03 (INCON ND Active Clean) : PASSED    
+TC-04 (CODIG Relational Chk)  : PASSED    
+TC-05 (COND Indicator Route)  : PASSED    
 ==================================================
-END OF TEST SUITE EXECUTION
+END OF TEST SUITE EXECUTION                       
 ==================================================
 --- Integration simulation ---
-./tests/run_sim.sh
+bash tests/run_sim.sh
 ==================================================
 1. Generating test datasets...
 Datasets ready in ./datasets/.
@@ -53,13 +53,13 @@ Outputs:
   ./logs/sysprint_*.log        - operation logs
 ==================================================
 --- Golden-file regression ---
-./tests/golden_check.sh
+bash tests/golden_check.sh
 PASS  golden: sysut2.dat
 PASS  golden: sysut5_rejects.dat
 PASS  golden: sysut2_lista.dat
 PASS  golden: syslist.log
 --- Engine test suite (behavior/limits/negative) ---
-./tests/run_tests.sh
+bash tests/run_tests.sh
 PASS  I1 div-zero warning, rc=0
 PASS  I2 FD edges: 4 violations logged, 6 records kept
 PASS  I3 CONV /INT ceiling lookup + miss default (ABCC)
@@ -127,7 +127,7 @@ PASS  N9 bounds validator
 RESULT: 63 passed, 0 failed
 ==================================================
 --- Manual-example conformance (plan Phase 9) ---
-./tests/manual_examples.sh
+bash tests/manual_examples.sh
 ==================================================================
  OSLISTA - manual sheets 5 to 17
 ==================================================================
@@ -252,7 +252,7 @@ PASS   H35-5   CONV3  DD=DDCATD/132,10,12/100,10,9
  manual examples: 93 PASS  0 FAIL  0 XFAIL (known gaps)  0 XPASS
 ==================================================================
 --- Real-mainframe regression (private job data) ---
-./tests/mainframe_check.sh
+bash tests/mainframe_check.sh
 ==================================================================
  Real-mainframe regression
 ==================================================================
@@ -269,4 +269,3 @@ NOTE  1 further step skipped: its expected output was not captured
  mainframe steps: 8 PASS  0 FAIL
 ==================================================================
 ```
-

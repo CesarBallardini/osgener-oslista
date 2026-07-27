@@ -6,6 +6,15 @@
 
 COBC        ?= cobc
 
+# The suites are run as "bash tests/x.sh", never as "./tests/x.sh".
+# This repository is developed on Windows, where core.fileMode is
+# false, so git can never record the executable bit from the working
+# tree and the scripts are committed mode 100644. A Linux checkout
+# (GitHub Actions) then fails them with exit 126, Permission denied.
+# Invoking the interpreter explicitly makes the bit irrelevant
+# everywhere: host, container, and CI.
+BASH        ?= bash
+
 # --- Dialect selection (plan G9) -----------------------------------
 # DIALECT=gnucobol (default) -> -std=mvs, DYNAMIC-assign copybooks
 # DIALECT=rm                 -> -std=rm, RM variable-assign copybooks
@@ -82,25 +91,25 @@ test: all ostests
 	@echo "--- Unit tests ---"
 	$(OUTPUT_DIR)/OSTESTS
 	@echo "--- Integration simulation ---"
-	./tests/run_sim.sh
+	$(BASH) tests/run_sim.sh
 	@echo "--- Golden-file regression ---"
-	./tests/golden_check.sh
+	$(BASH) tests/golden_check.sh
 	@echo "--- Engine test suite (behavior/limits/negative) ---"
-	./tests/run_tests.sh
+	$(BASH) tests/run_tests.sh
 	@echo "--- Manual-example conformance (plan Phase 9) ---"
-	./tests/manual_examples.sh
+	$(BASH) tests/manual_examples.sh
 	@echo "--- Real-mainframe regression (private job data) ---"
-	./tests/mainframe_check.sh
+	$(BASH) tests/mainframe_check.sh
 
 # Conformance suite alone: every control-card example printed in the
 # genuine SCD 1/84 manual.
 manual-tests: all
-	./tests/manual_examples.sh
+	$(BASH) tests/manual_examples.sh
 
 # Replay a real production job against the outputs the
 # genuine 1984 OSGENER produced. Skips cleanly if the data is absent.
 mf-tests: all
-	./tests/mainframe_check.sh
+	$(BASH) tests/mainframe_check.sh
 
 # --- Container ------------------------------------------------------
 # The image never contains the confidential job data (.dockerignore
