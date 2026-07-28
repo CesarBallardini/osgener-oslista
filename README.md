@@ -177,7 +177,7 @@ private/     confidential data, git-ignored, never published
     evidence that the authors distribute it freely:
     [horaciocao.com.ar/…/08_Cuarenta_anos_de_informatica_en_el_Estado.pdf](https://www.horaciocao.com.ar/wp-content/uploads/2015/05/08_Cuarenta_anos_de_informatica_en_el_Estado.pdf)
     — archived in the
-    [Wayback Machine snapshot of 2021-05-08](https://web.archive.org/web/20210508192023/https://www.horaciocao.com.ar/wp-content/uploads/2015/05/08_Cuarenta_anos_de_informatica_en_el_Estado.pdf),
+    [Wayback Machine snapshot of 2023-10-12](https://web.archive.org/web/20231012043250/https://www.horaciocao.com.ar/wp-content/uploads/2015/05/08_Cuarenta_anos_de_informatica_en_el_Estado.pdf),
     which is where this copy was retrieved from. Publicly funded research.
 
 ## Files, in mainframe terms
@@ -211,5 +211,5 @@ alongside it:
   research, it carries no restriction on copying, and its authors distribute it free of
   charge — co-author Horacio Cao publishes the very same PDF for download on his own site,
   [horaciocao.com.ar](https://www.horaciocao.com.ar/wp-content/uploads/2015/05/08_Cuarenta_anos_de_informatica_en_el_Estado.pdf)
-  ([archived](https://web.archive.org/web/20210508192023/https://www.horaciocao.com.ar/wp-content/uploads/2015/05/08_Cuarenta_anos_de_informatica_en_el_Estado.pdf)).
+  ([archived](https://web.archive.org/web/20231012043250/https://www.horaciocao.com.ar/wp-content/uploads/2015/05/08_Cuarenta_anos_de_informatica_en_el_Estado.pdf)).
   It is included here as the cited source for `docs/a-little-history.md`.

@@ -16,7 +16,7 @@ that built them, and the reason they were built at all.
 Publicly funded research, distributed free of charge by its authors: co-author **Horacio Cao**
 publishes this same PDF for download on his own website —
 [horaciocao.com.ar/wp-content/uploads/2015/05/08_Cuarenta_anos_de_informatica_en_el_Estado.pdf](https://www.horaciocao.com.ar/wp-content/uploads/2015/05/08_Cuarenta_anos_de_informatica_en_el_Estado.pdf)
-([Wayback Machine snapshot, 2021-05-08](https://web.archive.org/web/20210508192023/https://www.horaciocao.com.ar/wp-content/uploads/2015/05/08_Cuarenta_anos_de_informatica_en_el_Estado.pdf),
+([Wayback Machine snapshot, 2023-10-12](https://web.archive.org/web/20231012043250/https://www.horaciocao.com.ar/wp-content/uploads/2015/05/08_Cuarenta_anos_de_informatica_en_el_Estado.pdf),
 the copy retrieved here).
 
 The passage below is on **page 37** of
