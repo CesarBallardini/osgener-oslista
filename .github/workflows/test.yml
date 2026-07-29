@@ -61,6 +61,9 @@ jobs:
       - name: Manual-example conformance
         run: bash tests/manual_examples.sh
 
+      - name: Third-party deck replay
+        run: bash tests/thirdparty_deck.sh
+
       - name: Mainframe replay (skips without the private data)
         run: bash tests/mainframe_check.sh
 

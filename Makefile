@@ -98,6 +98,8 @@ test: all ostests
 	$(BASH) tests/run_tests.sh
 	@echo "--- Manual-example conformance (plan Phase 9) ---"
 	$(BASH) tests/manual_examples.sh
+	@echo "--- Third-party deck (foreign site, SORT as the oracle) ---"
+	$(BASH) tests/thirdparty_deck.sh
 	@echo "--- Real-mainframe regression (private job data) ---"
 	$(BASH) tests/mainframe_check.sh
 
@@ -105,6 +107,12 @@ test: all ostests
 # genuine SCD 1/84 manual.
 manual-tests: all
 	$(BASH) tests/manual_examples.sh
+
+# A field-selection deck written at another installation, replayed
+# against the IBM SORT step that was to replace it. Source and full
+# rationale in the script header.
+deck-tests: all
+	$(BASH) tests/thirdparty_deck.sh
 
 # Replay a real production job against the outputs the
 # genuine 1984 OSGENER produced. Skips cleanly if the data is absent.
@@ -201,6 +209,7 @@ help:
 	@echo "  make ostests     : build the unit test harness"
 	@echo "  make test        : build all + unit tests + simulation"
 	@echo "  make manual-tests: manual-example conformance suite"
+	@echo "  make deck-tests  : replay a third-party field-selection deck"
 	@echo "  make mf-tests    : replay the real mainframe job (needs private data)"
 	@echo "  make docker-build: build the Debian test image"
 	@echo "  make docker-test : run the suites in the container"
@@ -214,6 +223,7 @@ help:
 	@echo "  make clean       : remove bin/, datasets/, logs/"
 	@echo "  make help        : this list (default target)"
 
-.PHONY: all setup osgener oslista ostests test manual-tests mf-tests \
+.PHONY: all setup osgener oslista ostests test manual-tests deck-tests \
+        mf-tests \
         docker-build docker-test docker-shell \
         lint lint-extra lint-strict check-dialects clean help

@@ -38,6 +38,7 @@ make all           # bin/OSGENER + bin/OSLISTA (each = stub + OSENGINE.CBL)
 make all DIALECT=rm  # same, built -std=rm with the RM copybook (default: gnucobol/-std=mvs)
 make ostests       # bin/OSTESTS unit-test harness
 make test          # build all + unit tests + run_sim.sh + golden diff + engine suite
+make deck-tests    # replay the third-party deck (see "Third-party deck" below)
 make lint          # cobc -fsyntax-only -Wall -Wextra; MUST stay at 0 warnings
 make lint-extra    # count the two suppressed advisory classes (terminator/truncate)
 make lint-strict   # -std=mvs-strict conformance audit (portable copybook)
@@ -80,7 +81,7 @@ SYSIN  (control cards) ─┘                  SYSUT4 (secondary out, OSGENER; F
 
 ## Verification
 
-`make test` is the gate: 5/5 `OSTESTS` asserts, both simulations rc=0, 4/4 golden baselines, 63/63 engine tests, 93/93 manual examples, 8/8 mainframe steps — kept green in both the `gnucobol` and `rm` dialect builds. `make lint` at 0 and `make check-dialects` clean are also required.
+`make test` is the gate: 5/5 `OSTESTS` asserts, both simulations rc=0, 4/4 golden baselines, 63/63 engine tests, 93/93 manual examples, 9/9 third-party deck, 8/8 mainframe steps — kept green in both the `gnucobol` and `rm` dialect builds. `make lint` at 0 and `make check-dialects` clean are also required.
 
 The doc-level contradictions the transcriptions carried (SYSUT5 routing, the unreachable `BRA0290` CODIG case, mismatched field columns) were **resolved as decisions D0.1–D0.7** and the fixture was rebuilt accordingly; see the plan. They are no longer open — do not "fix" the fixture back toward the old transcriptions' narrative.
 
@@ -103,5 +104,11 @@ Every printed control-card example replays against the real binaries: `tests/man
 Reading the manual (`OSLSGEN.txt`) needs `iconv -f CP437` and **binary-safe grep (`grep -a`)** — the box-drawn diagrams are otherwise silently dropped.
 
 Decisions added or changed by that pass: **D0.8** (connector/run model — a condition card is a disjunction of runs; `/` opens a new run and may change family), **D0.9** (only relational INCON rules may be `.O.` alternatives), **D0.10** (records are `X(32760)`, card offsets `PIC 9(5)`), and **D0.2 amended** — `TIT` is valid in *both* modes, with different syntax and target per mode.
+
+## Third-party deck (plan Phase 11)
+
+`tests/thirdparty_deck.sh` (`make deck-tests`, part of `make test`) replays a field-selection deck found in a public JCL practice repository — [`Nazgonzalezz/JCL-practica` → *cambiar OSGENER por un SORT*](https://github.com/Nazgonzalezz/JCL-practica/blob/main/cambiar%20OSGENER%20por%20un%20SORT). The exercise converts the OSGENER step into an IBM SORT step, so it ships the deck **plus** the `OUTREC` that must produce the same record: an independent oracle for every offset and every `PD→ZD` width. **9/9 PASS.** Its op-code is `SELEC` and its DDs are `SYSUT`/`SYSLST` — a sibling installation's utility, not the SCD 1/84 one — but the operand grammar is character-for-character manual sheet 32's `FIELD`, so the groups replay verbatim. Do **not** add `SELEC` as an alias: the manual is the authority, and T8 asserts the foreign op-code is diagnosed rather than ignored.
+
+**Known behaviour it brushes against, not asserted:** a negative packed field converted `PZ` loses its sign (`7100-ENCODE-NUMERIC` emits digits only for `Z` output, no overpunch). The deck's data is unsigned and the manual does not state the rule; revisit if a real deck needs it.
 
 **When adding features, assert on behaviour, never on "the card was accepted".** Every gap in this phase hid a further *silent* defect that parse-acceptance could not see — most importantly M27, where only the first `/`-separated group of a FIELD/CORTE card was parsed and the rest was discarded with no diagnostic. Also: `PERFORM x` on a paragraph containing `GO TO x-EXIT` falls through into the following paragraphs — always `PERFORM x THRU x-EXIT`.

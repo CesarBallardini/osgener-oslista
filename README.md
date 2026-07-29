@@ -125,6 +125,7 @@ docker run --rm osgener-oslista make lint check-dialects
 | `tests/OSTESTS.CBL` | 5 in-COBOL asserts on the core algorithms | `make ostests` |
 | `tests/run_tests.sh` | 63 behaviour, limit and negative-parse cases | — |
 | `tests/manual_examples.sh` | **all 93 control-card examples printed in the manual** | `make manual-tests` |
+| `tests/thirdparty_deck.sh` | 9 cases replaying a field-selection deck from another installation, against the IBM SORT step written to replace it | `make deck-tests` |
 | `tests/golden_check.sh` | 4 end-to-end simulation baselines | — |
 | `tests/mainframe_check.sh` | **8 steps of a real 1984 production job, diffed against the mainframe's own output** | `make mf-tests` |
 
@@ -179,6 +180,15 @@ private/     confidential data, git-ignored, never published
     — archived in the
     [Wayback Machine snapshot of 2023-10-12](https://web.archive.org/web/20231012043250/https://www.horaciocao.com.ar/wp-content/uploads/2015/05/08_Cuarenta_anos_de_informatica_en_el_Estado.pdf),
     which is where this copy was retrieved from. Publicly funded research.
+
+- **A third-party OSGENER control deck**, in a public JCL practice repository:
+  [`Nazgonzalezz/JCL-practica` → *cambiar OSGENER por un SORT*](https://github.com/Nazgonzalezz/JCL-practica/blob/main/cambiar%20OSGENER%20por%20un%20SORT).
+  The exercise converts an OSGENER field-selection step into an IBM SORT step, so it carries
+  the deck **and** the `OUTREC` that must produce the same record — an oracle written by
+  somebody else for the answer. Its op-code is `SELEC` and its DDs are `SYSUT`/`SYSLST`, so it
+  is a sibling installation's utility rather than the SCD 1/84 one, but the operand grammar is
+  character-for-character the `FIELD` grammar of manual sheet 32, `PZ` included. Replayed by
+  [`tests/thirdparty_deck.sh`](tests/thirdparty_deck.sh).
 
 ## Files, in mainframe terms
 

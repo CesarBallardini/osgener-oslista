@@ -32,6 +32,7 @@ logs/
 tests/work/
 tests/work-manual/
 tests/work-mf/
+tests/work-3p/
 
 # Stray DDNAME files, if a harness ever forgets to redirect one.
 # Anchored to the repo root so a real file of the same name deeper

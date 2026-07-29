@@ -535,6 +535,60 @@ so an `S`-prefixed FIELD inside a GENER batch reads the following batch's second
 current behaviour is now locked by a golden baseline, but the manual does not say what it should
 be. Revisit if a real deck ever combines `GENER` with `S`-prefixed offsets.
 
+## Phase 11 — A third-party deck, with SORT as the oracle ✅ **COMPLETED** (2026-07-29)
+
+Phase 10's evidence is the strongest in the repo but it is *ours*: one job, one site, and its
+data cannot be published. This phase adds a much smaller piece of evidence with a property
+Phase 10 lacks — it is **entirely external, and public**.
+
+**Source:** [`Nazgonzalezz/JCL-practica` → *cambiar OSGENER por un SORT*](https://github.com/Nazgonzalezz/JCL-practica/blob/main/cambiar%20OSGENER%20por%20un%20SORT),
+a JCL practice exercise that replaces an OSGENER field-selection step with an IBM SORT step.
+It therefore carries the OSGENER deck **and** the `OUTREC` written to reproduce it byte for byte:
+
+```
+SELEC      199,2,PZ,5,3/';',8        5:199,2,PD,TO=ZD,LENGTH=3
+SELEC      4,3,PZ,26,5              26:4,3,PD,TO=ZD,LENGTH=5
+```
+
+Somebody else, working from a working system, wrote down which byte lands where and how wide
+each packed→zoned result is. That is an oracle we did not author, and it confirms independently:
+the `2n-1` digit width of an n-byte packed field, the left zero fill, the `'literal',So` group,
+and the placement of seven selections into one delimited 30-byte record — a shape **no example in
+the manual exercises**.
+
+**Provenance, recorded rather than smoothed over:** the deck's op-code is `SELEC` and its DDs are
+`SYSUT` / `SYSLST`, so it is a **sibling installation's** OSGENER, not the SCD 1/84 one. The
+operand grammar, however, is character-for-character sheet 32's `FIELD` — `Si,long1,conv,So,long`,
+`'literal',So`, `/` between groups, `PZ` among the XY codes. An unrelated site coding the identical
+grammar is corroboration of the manual's reading; it is *not* licence to add `SELEC` as an alias,
+and case T8 pins that the foreign op-code is diagnosed rather than silently dropped.
+
+- [x] **11.1 — `tests/thirdparty_deck.sh`**, 9 cases, **9 PASS**. Wired into `make test` and CI;
+      `make deck-tests` runs it alone. Fixture is 3 records of 230 bytes, packed fields built from
+      printable bytes (`X'41' X'53' X'4C'` = `"ASL"` = +41534) so it stays a text file.
+      - T1 the deck itself, one `FIELD` card per original `SELEC` card, diffed against the
+        record the `OUTREC` specifies.
+      - T2 the same seven groups as three continuation cards — identical output.
+      - T3 the same cards in reverse order — identical output (targets are disjoint). Also a
+        regression guard for M27-shaped defects: dropping "all but the first group" would drop a
+        *different* group here than in T1.
+      - T4 with only the first card, nothing but its four bytes appears — the output record is
+        built, not copied.
+      - T5/T6 `PZ` widths: 2 packed bytes → exactly 3 zoned digits, 3 → exactly 5.
+      - T7 declared output wider than the value → left zero fill.
+      - T8 `SELEC` rejected with `UNKNOWN OP-CODE`.
+      - T9 3 records read / 3 written.
+
+**No engine change was needed** — every case passed on the first replay, which is the result this
+phase was hoping for and could not assume.
+
+⚠ **Behaviour brushed against, deliberately not asserted:** a negative packed field converted `PZ`
+loses its sign — `7100-ENCODE-NUMERIC` moves digits only for `Z` output and never applies an
+overpunch, so `X'41534D'` (−41534) and `X'41534C'` (+41534) both render `41534`. On IBM, `PD→ZD`
+carries the sign in the zone of the last byte. The deck's data is unsigned, the manual states no
+rule, and no evidence in the repo settles it, so nothing here locks the current behaviour in.
+Revisit if a real deck ever converts a signed field to zoned.
+
 ## Review Gate
 
 - [x] All Phase 0 decisions documented with rationale.
